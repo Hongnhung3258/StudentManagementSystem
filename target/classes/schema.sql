@@ -2,14 +2,14 @@
 
 -- Login table
 CREATE TABLE IF NOT EXISTS login (
-    stt SERIAL PRIMARY KEY,
+    stt INT AUTO_INCREMENT PRIMARY KEY,
     tendangnhap VARCHAR(40) NOT NULL UNIQUE,
-    matkhau VARCHAR(30) NOT NULL
+    matkhau VARCHAR(255) NOT NULL
 );
 
 -- Department table
 CREATE TABLE IF NOT EXISTS department (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     makhoa CHAR(4) NOT NULL UNIQUE,
     tenkhoa VARCHAR(60) NOT NULL UNIQUE,
     matruongkhoa CHAR(6)
@@ -17,7 +17,7 @@ CREATE TABLE IF NOT EXISTS department (
 
 -- Lecturer table (create before adding the foreign key to department)
 CREATE TABLE IF NOT EXISTS lecturer (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     maGV CHAR(6) NOT NULL UNIQUE,
     tenkhoa VARCHAR(60),
     hoten VARCHAR(50) NOT NULL,
@@ -26,8 +26,8 @@ CREATE TABLE IF NOT EXISTS lecturer (
     sdt VARCHAR(15) UNIQUE,
     diachi VARCHAR(100),
     cccd CHAR(12) UNIQUE NOT NULL,
-    hocvi VARCHAR(50) CHECK (hocvi IN ('Cử nhân', 'Thạc sĩ', 'Tiến sĩ', 'PGS.TS', 'GS.TS', 'GS.TS.BS', 'PGS.TS.BS', 'TS.BS')), 
-    chucvu VARCHAR(50) CHECK (chucvu IN('Trưởng khoa', 'Giảng viên', 'Trợ giảng', 'Phó trưởng khoa')),
+    hocvi VARCHAR(50), 
+    chucvu VARCHAR(50),
     matkhau CHAR(8) NOT NULL,
     email VARCHAR(50) UNIQUE
 );
@@ -42,7 +42,7 @@ CREATE TABLE IF NOT EXISTS lecturer (
 
 -- Student table
 CREATE TABLE IF NOT EXISTS student (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     khoa CHAR(2),
     maSV CHAR(6) NOT NULL UNIQUE,
     tenkhoa VARCHAR(60),
@@ -72,56 +72,37 @@ CREATE TABLE IF NOT EXISTS student (
 
 -- Course table
 CREATE TABLE IF NOT EXISTS course (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     mamon CHAR(5) NOT NULL UNIQUE,
     tenmon VARCHAR(100) NOT NULL UNIQUE,
-    tinchi SMALLINT CHECK (tinchi BETWEEN 1 AND 10) NOT NULL,
+    tinchi TINYINT UNSIGNED NOT NULL,
     tenkhoa VARCHAR(60)
-    -- Foreign key will be added later
-    -- CONSTRAINT fk_course_department 
-    -- FOREIGN KEY (tenkhoa) REFERENCES department(tenkhoa)
-    -- ON UPDATE CASCADE
-    -- ON DELETE SET NULL
 );
 
 -- Class table
 CREATE TABLE IF NOT EXISTS class (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     malop CHAR(5) NOT NULL UNIQUE,
     tenlop VARCHAR(100) NOT NULL,
     tenmon VARCHAR(100),
     tenkhoa VARCHAR(60),
-    soluongSV INTEGER DEFAULT 0 CHECK (soluongSV <= 500),
+    soluongSV INT UNSIGNED DEFAULT 0,
     maGV CHAR(6) NOT NULL,
-    namhoc CHAR(9) NOT NULL CHECK (namhoc ~ '^[0-9]{4}-[0-9]{4}$'),
-    hocky SMALLINT CHECK (hocky BETWEEN 1 AND 4) NOT NULL
-    -- Foreign keys will be added later
-    -- CONSTRAINT fk_class_course 
-    -- FOREIGN KEY (tenmon) REFERENCES course(tenmon)
-    -- ON UPDATE CASCADE
-    -- ON DELETE RESTRICT,
-    -- CONSTRAINT fk_class_lecturer 
-    -- FOREIGN KEY (maGV) REFERENCES lecturer(maGV)
-    -- ON UPDATE CASCADE
-    -- ON DELETE RESTRICT,
-    -- CONSTRAINT fk_class_department 
-    -- FOREIGN KEY (tenkhoa) REFERENCES department(tenkhoa)
-    -- ON UPDATE CASCADE
-    -- ON DELETE SET NULL
+    namhoc CHAR(9) NOT NULL,
+    hocky TINYINT NOT NULL
 );
 
 -- News table
 CREATE TABLE IF NOT EXISTS news (
-    id SERIAL PRIMARY KEY,
+    id INT AUTO_INCREMENT PRIMARY KEY,
     matin CHAR(8) NOT NULL UNIQUE,
     tieude VARCHAR(200) NOT NULL,
     noidung TEXT NOT NULL,
     tailieu_url VARCHAR(255),
-    ngaytao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    ngaytao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     nguoitao VARCHAR(100)
 );
 
 -- Add initial admin user
-INSERT INTO login (tendangnhap, matkhau) 
-VALUES ('admin', 'admin123')
-ON CONFLICT (tendangnhap) DO NOTHING;
+INSERT IGNORE INTO login (tendangnhap, matkhau) 
+VALUES ('admin', 'admin123');

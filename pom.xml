@@ -51,7 +51,14 @@
             <scope>runtime</scope>
             <optional>true</optional>
         </dependency>
-        <!-- Thay PostgreSQL bằng MySQL -->
+        <!-- H2 Database cho development và test trên Replit -->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+        
+        <!-- MySQL cho production và local development -->
         <dependency>
             <groupId>com.mysql</groupId>
             <artifactId>mysql-connector-j</artifactId>

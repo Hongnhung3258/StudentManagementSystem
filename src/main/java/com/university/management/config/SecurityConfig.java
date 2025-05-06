@@ -21,7 +21,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .csrf(csrf -> csrf.disable())
+            .headers(headers -> headers.frameOptions().sameOrigin()) // Cho phép H2 console chạy trong iframe
             .authorizeHttpRequests(authorize -> authorize
+                // Allow access to H2 console
+                .requestMatchers("/h2-console/**").permitAll()
                 // Allow all access during development
                 .anyRequest().permitAll()
             )
