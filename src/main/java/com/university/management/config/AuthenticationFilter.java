@@ -26,7 +26,8 @@ public class AuthenticationFilter implements Filter {
         
         // URLs that don't require authentication
         if (path.equals("/login") || path.startsWith("/css/") || path.startsWith("/js/") || 
-            path.startsWith("/images/") || path.equals("/favicon.ico")) {
+            path.startsWith("/images/") || path.equals("/favicon.ico") || 
+            path.startsWith("/h2-console")) {
             chain.doFilter(request, response);
             return;
         }

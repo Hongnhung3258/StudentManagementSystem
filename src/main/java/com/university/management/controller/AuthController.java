@@ -1,59 +1,55 @@
 package com.university.management.controller;
 
 import com.university.management.service.LoginService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class AuthController {
 
-    private final LoginService loginService;
-    
     @Autowired
-    public AuthController(LoginService loginService) {
-        this.loginService = loginService;
-    }
+    private LoginService loginService;
 
     @GetMapping("/login")
-    public String login() {
+    public String loginPage() {
         return "login";
     }
     
+    // Đã chuyển route "/" sang IndexController để tránh xung đột
+    
     @PostMapping("/login")
-    public String processLogin(@RequestParam String username, 
-                              @RequestParam String password,
-                              HttpServletRequest request,
-                              RedirectAttributes redirectAttributes) {
+    public String processLogin(
+            @RequestParam("username") String username,
+            @RequestParam("password") String password,
+            Model model,
+            HttpSession session) {
         
-        if (loginService.authenticate(username, password)) {
-            // Authentication successful
-            HttpSession session = request.getSession(true);
+        // Xác thực đăng nhập
+        boolean authenticated = loginService.authenticate(username, password);
+        
+        if (authenticated) {
+            // Lưu thông tin người dùng vào session
             session.setAttribute("username", username);
+            session.setAttribute("authenticated", true);
             
-            // Redirect to dashboard
+            // Chuyển hướng đến trang dashboard
             return "redirect:/dashboard";
         } else {
-            // Authentication failed
-            redirectAttributes.addFlashAttribute("error", "Invalid username or password");
-            return "redirect:/login?error";
+            // Đăng nhập thất bại
+            model.addAttribute("error", "Tên đăng nhập hoặc mật khẩu không đúng");
+            return "login";
         }
     }
     
     @GetMapping("/logout")
-    public String logout(HttpServletRequest request, RedirectAttributes redirectAttributes) {
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();
-        }
-        
-        redirectAttributes.addFlashAttribute("success", "You have been logged out successfully");
+    public String logout(HttpSession session) {
+        session.invalidate();
         return "redirect:/login?logout";
     }
 }

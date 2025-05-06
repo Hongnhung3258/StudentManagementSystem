@@ -8,6 +8,7 @@ import com.university.management.util.PasswordGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -62,6 +63,12 @@ public class LecturerServiceImpl implements LecturerService {
     public String generateLecturerCode() {
         return CodeGenerator.generateLecturerCode();
     }
+    
+    @Override
+    public String generateLecturerId() {
+        // Implementation similar to generateLecturerCode, but may have different format
+        return generateLecturerCode();
+    }
 
     @Override
     public String generatePassword() {
@@ -81,5 +88,34 @@ public class LecturerServiceImpl implements LecturerService {
     @Override
     public Long countLecturers() {
         return lecturerRepository.countLecturers();
+    }
+    
+    @Override
+    public List<Lecturer> findByDepartmentId(Integer departmentId) {
+        // Implementation would typically query lecturers by department ID
+        // Since we don't have a direct reference by ID, this is a placeholder
+        // In a real implementation, we'd likely join with the department table
+        return new ArrayList<>();
+    }
+    
+    @Override
+    public List<Lecturer> findAvailableForDepartmentHead(Integer departmentId) {
+        // Implementation would find lecturers eligible for department head position
+        // Based on criteria like seniority, qualification, etc.
+        return new ArrayList<>();
+    }
+    
+    @Override
+    public boolean canDelete(Integer id) {
+        // Implementation would check if lecturer can be deleted
+        // E.g., not teaching any active classes, not a department head, etc.
+        return true;
+    }
+    
+    @Override
+    public List<Lecturer> findEligibleForCourse(Integer departmentId) {
+        // Implementation would find lecturers eligible to teach courses in a department
+        // Based on criteria like qualification, specialization, etc.
+        return new ArrayList<>();
     }
 }

@@ -21,8 +21,8 @@
 /home/runner/workspace/src/main/java/com/university/management/util/CodeGenerator.java
 /home/runner/workspace/src/main/java/com/university/management/entity/Department.java
 /home/runner/workspace/src/main/java/com/university/management/controller/NewsController.java
-/home/runner/workspace/src/main/java/com/university/management/service/LecturerService.java
 /home/runner/workspace/src/main/java/com/university/management/service/impl/ClassServiceImpl.java
+/home/runner/workspace/src/main/java/com/university/management/service/LecturerService.java
 /home/runner/workspace/src/main/java/com/university/management/controller/LecturerController.java
 /home/runner/workspace/src/main/java/com/university/management/controller/StudentController.java
 /home/runner/workspace/src/main/java/com/university/management/service/impl/CourseServiceImpl.java
@@ -34,10 +34,11 @@
 /home/runner/workspace/src/main/java/com/university/management/config/AuthenticationFilter.java
 /home/runner/workspace/src/main/java/com/university/management/entity/News.java
 /home/runner/workspace/src/main/java/com/university/management/repository/StudentRepository.java
+/home/runner/workspace/src/main/java/com/university/management/controller/IndexController.java
 /home/runner/workspace/src/main/java/com/university/management/repository/CourseRepository.java
 /home/runner/workspace/src/main/java/com/university/management/service/DepartmentService.java
 /home/runner/workspace/src/main/java/com/university/management/entity/Class.java
 /home/runner/workspace/src/main/java/com/university/management/controller/DashboardController.java
-/home/runner/workspace/src/main/java/com/university/management/service/ClassService.java
 /home/runner/workspace/src/main/java/com/university/management/service/impl/LecturerServiceImpl.java
+/home/runner/workspace/src/main/java/com/university/management/service/ClassService.java
 /home/runner/workspace/src/main/java/com/university/management/service/impl/NewsServiceImpl.java

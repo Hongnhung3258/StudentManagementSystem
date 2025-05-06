@@ -7,6 +7,7 @@ import com.university.management.util.CodeGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -77,5 +78,19 @@ public class ClassServiceImpl implements ClassService {
     @Override
     public Long countClasses() {
         return classRepository.countClasses();
+    }
+    
+    @Override
+    public List<Class> findByCourseId(Integer courseId) {
+        // Implementation would typically join with the course table
+        // and filter by course ID
+        return new ArrayList<>();
+    }
+    
+    @Override
+    public List<Class> findByLecturerId(Integer lecturerId) {
+        // Implementation would typically join with the lecturer table
+        // and filter by lecturer ID
+        return new ArrayList<>();
     }
 }

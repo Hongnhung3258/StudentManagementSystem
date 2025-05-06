@@ -26,6 +26,7 @@ com/university/management/service/StudentService.class
 com/university/management/entity/Department.class
 com/university/management/entity/Class.class
 com/university/management/controller/NewsController.class
+com/university/management/controller/IndexController.class
 com/university/management/entity/Lecturer.class
 com/university/management/repository/NewsRepository.class
 com/university/management/service/CourseService.class

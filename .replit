@@ -22,7 +22,7 @@ author = "agent"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"
-args = "mvn clean spring-boot:run -Dserver.port=5000"
+args = "mvn clean spring-boot:run -Dspring-boot.run.arguments=--server.port=5000 -Dserver.address=0.0.0.0"
 waitForPort = 5000
 
 [deployment]
