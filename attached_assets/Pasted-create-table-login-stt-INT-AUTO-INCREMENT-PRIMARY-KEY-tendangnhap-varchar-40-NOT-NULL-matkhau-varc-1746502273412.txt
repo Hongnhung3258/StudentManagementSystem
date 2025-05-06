@@ -1,0 +1,87 @@
+create table login(stt INT AUTO_INCREMENT PRIMARY KEY,tendangnhap varchar(40) NOT NULL, matkhau varchar(30) NOT NULL);
+
+CREATE TABLE department (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    makhoa CHAR(4) NOT NULL UNIQUE,
+    tenkhoa VARCHAR(60) NOT NULL UNIQUE,
+    matruongkhoa CHAR(6)
+);
+
+ALTER TABLE department
+ADD CONSTRAINT fk_lecturer_department FOREIGN KEY (matruongkhoa) 
+	REFERENCES lecturer(maGV)
+    ON UPDATE CASCADE
+    ON DELETE SET NULL;
+
+CREATE TABLE student (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    khoa CHAR(2),
+    maSV CHAR(6) NOT NULL UNIQUE,
+    tenkhoa VARCHAR(60),
+    hoten VARCHAR(50) NOT NULL,
+    gioitinh ENUM('Nam', 'Nữ') NOT NULL,
+    ngaysinh DATE NOT NULL,
+    sdt VARCHAR(15) UNIQUE,
+    diachi VARCHAR(100),
+    cccd CHAR(12) UNIQUE NOT NULL,
+    matkhau CHAR(8) NOT NULL,
+    email VARCHAR(50) GENERATED ALWAYS AS (CONCAT(maSV, '@st.phenikaa-uni.edu.vn')) STORED UNIQUE,
+    CONSTRAINT fk_student_department FOREIGN KEY (tenkhoa) 
+        REFERENCES department(tenkhoa) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+CREATE TABLE lecturer (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    maGV CHAR(6) NOT NULL UNIQUE,
+    tenkhoa VARCHAR(60),
+    hoten VARCHAR(50) NOT NULL,
+    gioitinh ENUM('Nam', 'Nữ') NOT NULL,
+    ngaysinh DATE NOT NULL,
+    sdt VARCHAR(15) UNIQUE,
+    diachi VARCHAR(100),
+    cccd CHAR(12) UNIQUE NOT NULL,
+	hocvi VARCHAR(50) CHECK (hocvi IN ('Cử nhân', 'Thạc sĩ', 'Tiến sĩ','PGS.TS', 'GS.TS', 'GS.TS.BS', 'PGS.TS.BS', 'TS.BS')), 
+	chucvu VARCHAR(50) CHECK (chucvu IN('Trưởng khoa', 'Giảng viên', 'Trợ giảng', 'Phó trưởng khoa')),
+    matkhau CHAR(8) NOT NULL,
+    email VARCHAR(50) GENERATED ALWAYS AS (CONCAT(maGV, '@tchr.phenikaa-uni.edu.vn')) STORED UNIQUE,
+    CONSTRAINT fk_lecturer_department FOREIGN KEY (tenkhoa) 
+		REFERENCES department(tenkhoa) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+CREATE TABLE course (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    mamon CHAR(5) NOT NULL UNIQUE,
+    tenmon VARCHAR(100) NOT NULL UNIQUE,
+    tinchi TINYINT UNSIGNED CHECK (tinchi BETWEEN 1 AND 10) NOT NULL,
+    tenkhoa VARCHAR(60),
+    CONSTRAINT fk_course_department FOREIGN KEY (tenkhoa) 
+        REFERENCES department(tenkhoa) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+CREATE TABLE class (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    malop CHAR(5) NOT NULL UNIQUE,
+    tenlop VARCHAR(100) NOT NULL,
+    tenmon VARCHAR(100),
+    tenkhoa VARCHAR(60),
+    soluongSV INT UNSIGNED DEFAULT 0 CHECK (soluongSV <= 500),
+    maGV CHAR(6) NOT NULL,
+    namhoc CHAR(9) NOT NULL CHECK (namhoc REGEXP '^[0-9]{4}-[0-9]{4}$'),
+    hocky TINYINT CHECK (hocky BETWEEN 1 AND 4) NOT NULL,
+    CONSTRAINT fk_class_course FOREIGN KEY (tenmon) 
+        REFERENCES course(tenmon) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk_class_lecturer FOREIGN KEY (maGV) 
+        REFERENCES lecturer(maGV) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk_class_department FOREIGN KEY (tenkhoa) 
+        REFERENCES department(tenkhoa) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+CREATE TABLE news (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    matin CHAR(8) NOT NULL UNIQUE,
+    tieude VARCHAR(200) NOT NULL,
+    noidung TEXT NOT NULL,
+    tailieu_url VARCHAR(255),
+    ngaytao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    nguoitao VARCHAR(100)
+);
