@@ -31,6 +31,7 @@
 /home/runner/workspace/src/main/java/com/university/management/service/impl/DashboardServiceImpl.java
 /home/runner/workspace/src/main/java/com/university/management/entity/Student.java
 /home/runner/workspace/src/main/java/com/university/management/service/impl/DepartmentServiceImpl.java
+/home/runner/workspace/src/main/java/com/university/management/config/AuthenticationFilter.java
 /home/runner/workspace/src/main/java/com/university/management/entity/News.java
 /home/runner/workspace/src/main/java/com/university/management/repository/StudentRepository.java
 /home/runner/workspace/src/main/java/com/university/management/repository/CourseRepository.java

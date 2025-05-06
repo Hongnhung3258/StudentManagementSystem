@@ -4,7 +4,7 @@ import com.university.management.entity.Department;
 import com.university.management.entity.Lecturer;
 import com.university.management.service.DepartmentService;
 import com.university.management.service.LecturerService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,11 +13,16 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/departments")
-@RequiredArgsConstructor
 public class DepartmentController {
     
     private final DepartmentService departmentService;
     private final LecturerService lecturerService;
+    
+    @Autowired
+    public DepartmentController(DepartmentService departmentService, LecturerService lecturerService) {
+        this.departmentService = departmentService;
+        this.lecturerService = lecturerService;
+    }
     
     @GetMapping
     public String listDepartments(Model model) {

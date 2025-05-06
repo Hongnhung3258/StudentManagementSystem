@@ -5,6 +5,7 @@ com/university/management/repository/ClassRepository.class
 com/university/management/repository/StudentRepository.class
 com/university/management/service/DepartmentService.class
 com/university/management/util/CodeGenerator.class
+com/university/management/config/AuthenticationFilter.class
 com/university/management/service/DashboardService.class
 com/university/management/controller/DepartmentController.class
 com/university/management/controller/AuthController.class

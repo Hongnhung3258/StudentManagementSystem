@@ -8,7 +8,7 @@ import com.university.management.service.ClassService;
 import com.university.management.service.CourseService;
 import com.university.management.service.DepartmentService;
 import com.university.management.service.LecturerService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -17,13 +17,23 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/classes")
-@RequiredArgsConstructor
 public class ClassController {
     
     private final ClassService classService;
     private final CourseService courseService;
     private final DepartmentService departmentService;
     private final LecturerService lecturerService;
+    
+    @Autowired
+    public ClassController(ClassService classService, 
+                          CourseService courseService,
+                          DepartmentService departmentService,
+                          LecturerService lecturerService) {
+        this.classService = classService;
+        this.courseService = courseService;
+        this.departmentService = departmentService;
+        this.lecturerService = lecturerService;
+    }
     
     @GetMapping
     public String listClasses(Model model) {

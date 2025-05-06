@@ -4,17 +4,20 @@ import com.university.management.entity.Department;
 import com.university.management.repository.DepartmentRepository;
 import com.university.management.service.DepartmentService;
 import com.university.management.util.CodeGenerator;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class DepartmentServiceImpl implements DepartmentService {
     
     private final DepartmentRepository departmentRepository;
-    private final CodeGenerator codeGenerator;
+
+    @Autowired
+    public DepartmentServiceImpl(DepartmentRepository departmentRepository) {
+        this.departmentRepository = departmentRepository;
+    }
 
     @Override
     public List<Department> findAllDepartments() {
@@ -54,7 +57,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     @Override
     public String generateDepartmentCode() {
         // Department code is 'KH' followed by a 2-digit number
-        return codeGenerator.generateDepartmentCode();
+        return CodeGenerator.generateDepartmentCode();
     }
 
     @Override

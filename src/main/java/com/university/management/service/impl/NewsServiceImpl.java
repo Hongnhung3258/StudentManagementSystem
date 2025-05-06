@@ -4,18 +4,21 @@ import com.university.management.entity.News;
 import com.university.management.repository.NewsRepository;
 import com.university.management.service.NewsService;
 import com.university.management.util.CodeGenerator;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class NewsServiceImpl implements NewsService {
     
     private final NewsRepository newsRepository;
-    private final CodeGenerator codeGenerator;
+
+    @Autowired
+    public NewsServiceImpl(NewsRepository newsRepository) {
+        this.newsRepository = newsRepository;
+    }
 
     @Override
     public List<News> findAllNews() {
@@ -52,7 +55,7 @@ public class NewsServiceImpl implements NewsService {
 
     @Override
     public String generateNewsCode() {
-        return codeGenerator.generateNewsCode();
+        return CodeGenerator.generateNewsCode();
     }
 
     @Override

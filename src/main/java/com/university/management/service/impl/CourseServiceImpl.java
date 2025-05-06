@@ -4,17 +4,20 @@ import com.university.management.entity.Course;
 import com.university.management.repository.CourseRepository;
 import com.university.management.service.CourseService;
 import com.university.management.util.CodeGenerator;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class CourseServiceImpl implements CourseService {
     
     private final CourseRepository courseRepository;
-    private final CodeGenerator codeGenerator;
+
+    @Autowired
+    public CourseServiceImpl(CourseRepository courseRepository) {
+        this.courseRepository = courseRepository;
+    }
 
     @Override
     public List<Course> findAllCourses() {
@@ -58,7 +61,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Override
     public String generateCourseCode() {
-        return codeGenerator.generateCourseCode();
+        return CodeGenerator.generateCourseCode();
     }
 
     @Override

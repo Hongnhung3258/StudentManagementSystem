@@ -17,6 +17,6 @@ public interface LecturerRepository extends JpaRepository<Lecturer, Integer> {
     @Query(value = "SELECT COUNT(*) FROM lecturer", nativeQuery = true)
     Long countLecturers();
     
-    @Query(value = "SELECT MAX(CAST(SUBSTRING(maGV, 3, 4) AS UNSIGNED)) FROM lecturer", nativeQuery = true)
+    @Query(value = "SELECT MAX(CAST(SUBSTRING(magv, 3, 4) AS INTEGER)) FROM lecturer", nativeQuery = true)
     Integer findMaxLecturerNumber();
 }

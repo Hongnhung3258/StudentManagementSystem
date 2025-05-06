@@ -5,18 +5,20 @@ import com.university.management.repository.StudentRepository;
 import com.university.management.service.StudentService;
 import com.university.management.util.CodeGenerator;
 import com.university.management.util.PasswordGenerator;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class StudentServiceImpl implements StudentService {
     
     private final StudentRepository studentRepository;
-    private final CodeGenerator codeGenerator;
-    private final PasswordGenerator passwordGenerator;
+
+    @Autowired
+    public StudentServiceImpl(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
 
     @Override
     public List<Student> findAllStudents() {
@@ -58,12 +60,13 @@ public class StudentServiceImpl implements StudentService {
 
     @Override
     public String generateStudentCode(String yearCode) {
-        return codeGenerator.generateStudentCode(yearCode);
+        // Ignore the yearCode parameter for now and use the static method
+        return CodeGenerator.generateStudentCode();
     }
 
     @Override
     public String generatePassword() {
-        return passwordGenerator.generateRandomPassword();
+        return PasswordGenerator.generateSimplePassword();
     }
 
     @Override

@@ -5,18 +5,20 @@ import com.university.management.repository.LecturerRepository;
 import com.university.management.service.LecturerService;
 import com.university.management.util.CodeGenerator;
 import com.university.management.util.PasswordGenerator;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
 public class LecturerServiceImpl implements LecturerService {
     
     private final LecturerRepository lecturerRepository;
-    private final CodeGenerator codeGenerator;
-    private final PasswordGenerator passwordGenerator;
+
+    @Autowired
+    public LecturerServiceImpl(LecturerRepository lecturerRepository) {
+        this.lecturerRepository = lecturerRepository;
+    }
 
     @Override
     public List<Lecturer> findAllLecturers() {
@@ -58,12 +60,12 @@ public class LecturerServiceImpl implements LecturerService {
 
     @Override
     public String generateLecturerCode() {
-        return codeGenerator.generateLecturerCode();
+        return CodeGenerator.generateLecturerCode();
     }
 
     @Override
     public String generatePassword() {
-        return passwordGenerator.generateRandomPassword();
+        return PasswordGenerator.generateSimplePassword();
     }
 
     @Override

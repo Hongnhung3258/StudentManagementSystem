@@ -17,6 +17,6 @@ public interface StudentRepository extends JpaRepository<Student, Integer> {
     @Query(value = "SELECT COUNT(*) FROM student", nativeQuery = true)
     Long countStudents();
     
-    @Query(value = "SELECT MAX(CAST(SUBSTRING(maSV, 3, 4) AS UNSIGNED)) FROM student WHERE khoa = ?1", nativeQuery = true)
+    @Query(value = "SELECT MAX(CAST(SUBSTRING(masv, 3, 4) AS INTEGER)) FROM student WHERE khoa = ?1", nativeQuery = true)
     Integer findMaxStudentNumber(String yearCode);
 }

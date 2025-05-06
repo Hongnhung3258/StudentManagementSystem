@@ -14,11 +14,12 @@ public class Login {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer stt;
+    @Column(name = "stt")
+    private Integer id;
     
-    @Column(name = "tendangnhap", nullable = false, length = 40)
+    @Column(name = "tendangnhap", length = 40, nullable = false)
     private String username;
     
-    @Column(name = "matkhau", nullable = false, length = 30)
+    @Column(name = "matkhau", length = 100, nullable = false)
     private String password;
 }

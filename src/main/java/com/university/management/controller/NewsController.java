@@ -2,7 +2,7 @@ package com.university.management.controller;
 
 import com.university.management.entity.News;
 import com.university.management.service.NewsService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,10 +11,14 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/news")
-@RequiredArgsConstructor
 public class NewsController {
     
     private final NewsService newsService;
+    
+    @Autowired
+    public NewsController(NewsService newsService) {
+        this.newsService = newsService;
+    }
     
     @GetMapping
     public String listNews(Model model) {
