@@ -5,7 +5,6 @@ channel = "stable-24_05"
 packages = ["maven", "postgresql", "zip"]
 
 [workflows]
-runButton = "Project"
 
 [[workflows.workflow]]
 name = "Project"
@@ -19,6 +18,7 @@ args = "University Management Server"
 [[workflows.workflow]]
 name = "University Management Server"
 author = "agent"
+mode = "sequential"
 
 [[workflows.workflow.tasks]]
 task = "shell.exec"

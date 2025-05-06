@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bảng điều khiển - Hệ thống Quản lý Đại học</title>
+    <title>Nhật ký hoạt động - Hệ thống Quản lý Đại học</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css" rel="stylesheet">
     <style>
@@ -77,18 +77,6 @@
             border-color: transparent;
             box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
         }
-        .bd-placeholder-img {
-            font-size: 1.125rem;
-            text-anchor: middle;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            user-select: none;
-        }
-        @media (min-width: 768px) {
-            .bd-placeholder-img-lg {
-                font-size: 3.5rem;
-            }
-        }
     </style>
 </head>
 <body>
@@ -112,43 +100,43 @@
       <div class="position-sticky pt-3">
         <ul class="nav flex-column">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">
+            <a class="nav-link" href="/dashboard">
               <span data-feather="home"></span>
               Bảng điều khiển
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/students">
               <span data-feather="users"></span>
               Sinh viên
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/lecturers">
               <span data-feather="briefcase"></span>
               Giảng viên
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/departments">
               <span data-feather="book-open"></span>
               Khoa
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/courses">
               <span data-feather="book"></span>
               Môn học
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/classes">
               <span data-feather="layers"></span>
               Lớp học
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">
+            <a class="nav-link" href="/news">
               <span data-feather="bell"></span>
               Tin tức
             </a>
@@ -160,7 +148,7 @@
         </h6>
         <ul class="nav flex-column mb-2">
           <li class="nav-item">
-            <a class="nav-link" href="/activity-logs">
+            <a class="nav-link active" href="/activity-logs">
               <span data-feather="file-text"></span>
               Nhật ký hoạt động
             </a>
@@ -183,103 +171,33 @@
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Bảng điều khiển</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group me-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary">Chia sẻ</button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">Xuất</button>
-          </div>
-          <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
-            <span data-feather="calendar"></span>
-            Học kỳ này
-          </button>
-        </div>
+        <h1 class="h2">Nhật ký hoạt động</h1>
       </div>
 
-      <div class="row">
-        <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title">Sinh viên</h5>
-              <h2 class="card-text" th:text="${studentCount}">0</h2>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="/students" class="btn btn-sm btn-outline-secondary">Xem</a>
-                </div>
-                <small class="text-muted">Tổng số sinh viên</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title">Giảng viên</h5>
-              <h2 class="card-text" th:text="${lecturerCount}">0</h2>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="/lecturers" class="btn btn-sm btn-outline-secondary">Xem</a>
-                </div>
-                <small class="text-muted">Tổng số giảng viên</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="col-md-4">
-          <div class="card mb-4 shadow-sm">
-            <div class="card-body">
-              <h5 class="card-title">Lớp học</h5>
-              <h2 class="card-text" th:text="${classCount}">0</h2>
-              <div class="d-flex justify-content-between align-items-center">
-                <div class="btn-group">
-                  <a href="/classes" class="btn btn-sm btn-outline-secondary">Xem</a>
-                </div>
-                <small class="text-muted">Tổng số lớp học</small>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <h2>Tin tức mới nhất</h2>
       <div class="table-responsive">
         <table class="table table-striped table-sm">
           <thead>
             <tr>
               <th scope="col">#</th>
-              <th scope="col">Tiêu đề</th>
-              <th scope="col">Người tạo</th>
-              <th scope="col">Ngày tạo</th>
+              <th scope="col">Người dùng</th>
               <th scope="col">Hành động</th>
+              <th scope="col">Đối tượng</th>
+              <th scope="col">ID Đối tượng</th>
+              <th scope="col">Thời gian</th>
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>1</td>
-              <td>Welcome to the new semester!</td>
-              <td>Admin</td>
-              <td>2023-09-01</td>
-              <td>
-                <a href="#" class="btn btn-sm btn-outline-secondary">Xem</a>
-              </td>
+            <tr th:each="log : ${logs}">
+              <td th:text="${log.id}">1</td>
+              <td th:text="${log.username}">admin</td>
+              <td th:text="${log.action}">Thêm</td>
+              <td th:text="${log.target}">Sinh viên</td>
+              <td th:text="${log.targetId}">1</td>
+              <td th:text="${#temporals.format(log.timestamp, 'dd-MM-yyyy HH:mm:ss')}">01-01-2025 00:00:00</td>
             </tr>
-            <tr>
-              <td>2</td>
-              <td>Course registration deadline</td>
-              <td>Admin</td>
-              <td>2023-09-05</td>
-              <td>
-                <a href="#" class="btn btn-sm btn-outline-secondary">Xem</a>
-              </td>
-            </tr>
-            <tr>
-              <td>3</td>
-              <td>Library hours extended</td>
-              <td>Admin</td>
-              <td>2023-09-10</td>
-              <td>
-                <a href="#" class="btn btn-sm btn-outline-secondary">Xem</a>
-              </td>
+            <!-- Hiển thị thông báo nếu không có dữ liệu -->
+            <tr th:if="${logs.isEmpty()}">
+              <td colspan="6" class="text-center">Không có nhật ký hoạt động nào</td>
             </tr>
           </tbody>
         </table>

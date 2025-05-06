@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tạo lịch học - Hệ thống Quản lý Đại học</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css" rel="stylesheet">
+    <style>
+        body {
+            font-size: .875rem;
+        }
+        .feather {
+            width: 16px;
+            height: 16px;
+            vertical-align: text-bottom;
+        }
+        .sidebar {
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            z-index: 100;
+            padding: 48px 0 0;
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+        }
+        @media (max-width: 767.98px) {
+            .sidebar {
+                top: 5rem;
+            }
+        }
+        .sidebar-sticky {
+            position: relative;
+            top: 0;
+            height: calc(100vh - 48px);
+            padding-top: .5rem;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+        .sidebar .nav-link {
+            font-weight: 500;
+            color: #333;
+        }
+        .sidebar .nav-link .feather {
+            margin-right: 4px;
+            color: #727272;
+        }
+        .sidebar .nav-link.active {
+            color: #2470dc;
+        }
+        .sidebar .nav-link:hover .feather,
+        .sidebar .nav-link.active .feather {
+            color: inherit;
+        }
+        .navbar-brand {
+            padding-top: .75rem;
+            padding-bottom: .75rem;
+            font-size: 1rem;
+            background-color: rgba(0, 0, 0, .25);
+            box-shadow: inset -1px 0 0 rgba(0, 0, 0, .25);
+        }
+        .navbar .navbar-toggler {
+            top: .25rem;
+            right: 1rem;
+        }
+        .navbar .form-control {
+            padding: .75rem 1rem;
+            border-width: 0;
+            border-radius: 0;
+        }
+        .form-control-dark {
+            color: #fff;
+            background-color: rgba(255, 255, 255, .1);
+            border-color: rgba(255, 255, 255, .1);
+        }
+        .form-control-dark:focus {
+            border-color: transparent;
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+        }
+    </style>
+</head>
+<body>
+    
+<header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Quản lý Đại học</a>
+  <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <input class="form-control form-control-dark w-100" type="text" placeholder="Tìm kiếm" aria-label="Search">
+  <div class="navbar-nav">
+    <div class="nav-item text-nowrap">
+      <a class="nav-link px-3" href="/logout">Đăng xuất</a>
+    </div>
+  </div>
+</header>
+
+<div class="container-fluid">
+  <div class="row">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+      <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="/dashboard">
+              <span data-feather="home"></span>
+              Bảng điều khiển
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/students">
+              <span data-feather="users"></span>
+              Sinh viên
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/lecturers">
+              <span data-feather="briefcase"></span>
+              Giảng viên
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/departments">
+              <span data-feather="book-open"></span>
+              Khoa
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/courses">
+              <span data-feather="book"></span>
+              Môn học
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/classes">
+              <span data-feather="layers"></span>
+              Lớp học
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/news">
+              <span data-feather="bell"></span>
+              Tin tức
+            </a>
+          </li>
+        </ul>
+
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+          <span>Quản lý hệ thống</span>
+        </h6>
+        <ul class="nav flex-column mb-2">
+          <li class="nav-item">
+            <a class="nav-link" href="/activity-logs">
+              <span data-feather="file-text"></span>
+              Nhật ký hoạt động
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/payments">
+              <span data-feather="dollar-sign"></span>
+              Tài chính
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" href="/schedules">
+              <span data-feather="calendar"></span>
+              Lịch trình
+            </a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2" th:text="${pageTitle}">Tạo lịch học mới</h1>
+      </div>
+
+      <div class="card">
+        <div class="card-header">
+          <strong th:text="${schedule.id != null} ? 'Chỉnh sửa lịch học' : 'Tạo lịch học mới'">Tạo lịch học mới</strong>
+        </div>
+        <div class="card-body">
+          <form th:action="@{/schedules/save}" method="post" th:object="${schedule}">
+            <input type="hidden" th:field="*{id}" />
+            
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label for="classId" class="form-label">Mã lớp <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="classId" th:field="*{classId}" required 
+                       maxlength="5" placeholder="Ví dụ: LH001" />
+              </div>
+              <div class="col-md-4">
+                <label for="lecturerId" class="form-label">Mã giảng viên <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="lecturerId" th:field="*{lecturerId}" required 
+                       maxlength="6" placeholder="Ví dụ: GV001" />
+              </div>
+              <div class="col-md-4">
+                <label for="classroom" class="form-label">Phòng học <span class="text-danger">*</span></label>
+                <input type="text" class="form-control" id="classroom" th:field="*{classroom}" required 
+                       maxlength="20" placeholder="Ví dụ: P101" />
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label for="dayOfWeek" class="form-label">Thứ <span class="text-danger">*</span></label>
+                <select class="form-select" id="dayOfWeek" th:field="*{dayOfWeek}" required>
+                  <option value="" selected disabled>Chọn thứ</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ hai</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="startPeriod" class="form-label">Tiết bắt đầu <span class="text-danger">*</span></label>
+                <select class="form-select" id="startPeriod" th:field="*{startPeriod}" required>
+                  <option value="" selected disabled>Chọn tiết</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">1</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="endPeriod" class="form-label">Tiết kết thúc <span class="text-danger">*</span></label>
+                <select class="form-select" id="endPeriod" th:field="*{endPeriod}" required>
+                  <option value="" selected disabled>Chọn tiết</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">1</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label for="startDate" class="form-label">Ngày bắt đầu <span class="text-danger">*</span></label>
+                <input type="date" class="form-control" id="startDate" th:field="*{startDate}" required />
+              </div>
+              <div class="col-md-4">
+                <label for="academicYear" class="form-label">Năm học <span class="text-danger">*</span></label>
+                <select class="form-select" id="academicYear" th:field="*{academicYear}" required>
+                  <option value="" selected disabled>Chọn năm học</option>
+                  <option th:each="year : ${academicYears}" th:value="${year}" th:text="${year}">2024-2025</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="semester" class="form-label">Học kỳ <span class="text-danger">*</span></label>
+                <select class="form-select" id="semester" th:field="*{semester}" required>
+                  <option value="" selected disabled>Chọn học kỳ</option>
+                  <option th:each="sem : ${semesters}" th:value="${sem}" th:text="${sem}">1</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="d-flex justify-content-end gap-2">
+              <a href="/schedules" class="btn btn-secondary">Hủy</a>
+              <button type="submit" class="btn btn-primary">Lưu</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js"></script>
+<script>
+  // Initialize Feather icons
+  document.addEventListener('DOMContentLoaded', function() {
+    feather.replace();
+    
+    // Validate that end period is later than start period
+    const startPeriodSelect = document.getElementById('startPeriod');
+    const endPeriodSelect = document.getElementById('endPeriod');
+    
+    endPeriodSelect.addEventListener('change', function() {
+      const startValue = parseInt(startPeriodSelect.value, 10);
+      const endValue = parseInt(endPeriodSelect.value, 10);
+      
+      if (endValue < startValue) {
+        alert('Tiết kết thúc phải lớn hơn hoặc bằng tiết bắt đầu');
+        endPeriodSelect.value = startValue;
+      }
+    });
+    
+    startPeriodSelect.addEventListener('change', function() {
+      const startValue = parseInt(startPeriodSelect.value, 10);
+      const endValue = parseInt(endPeriodSelect.value, 10);
+      
+      if (endValue < startValue) {
+        endPeriodSelect.value = startValue;
+      }
+    });
+  });
+</script>
+</body>
+</html>
