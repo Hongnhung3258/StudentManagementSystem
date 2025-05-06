@@ -2,7 +2,7 @@ modules = ["java", "java-17", "postgresql-16"]
 
 [nix]
 channel = "stable-24_05"
-packages = ["maven", "postgresql"]
+packages = ["maven", "postgresql", "zip"]
 
 [workflows]
 runButton = "Project"
