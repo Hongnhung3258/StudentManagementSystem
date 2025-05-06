@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragments/layout :: head('News Management')"></head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div th:replace="fragments/sidebar :: sidebar"></div>
+            
+            <!-- Red accent bar -->
+            <div class="accent-bar col-auto"></div>
+            
+            <!-- Main content -->
+            <div class="col content">
+                <div class="row mb-4">
+                    <div class="col">
+                        <h2>News Management</h2>
+                    </div>
+                </div>
+                
+                <!-- Search and Add button -->
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" id="searchInput" class="form-control" placeholder="Search news...">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <i data-feather="search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-md-end">
+                        <a th:href="@{/news/add}" class="btn btn-primary">
+                            <i data-feather="plus"></i> Add New News
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- News Table -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="table-responsive data-table">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>#</th>
+                                        <th>News Code</th>
+                                        <th>Title</th>
+                                        <th>Created At</th>
+                                        <th>Author</th>
+                                        <th>Document</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="newsItem, stat : ${newsList}">
+                                        <td th:text="${stat.count}">1</td>
+                                        <td th:text="${newsItem.newsCode}">TT000001</td>
+                                        <td th:text="${newsItem.title}">University News Title</td>
+                                        <td th:text="${#temporals.format(newsItem.createdAt, 'dd/MM/yyyy HH:mm')}">01/01/2023 12:00</td>
+                                        <td th:text="${newsItem.createdBy}">Admin</td>
+                                        <td>
+                                            <a th:if="${newsItem.documentUrl != null && !newsItem.documentUrl.isEmpty()}" 
+                                               th:href="${newsItem.documentUrl}" target="_blank" class="btn btn-sm btn-info">
+                                                <i data-feather="file"></i> View
+                                            </a>
+                                            <span th:unless="${newsItem.documentUrl != null && !newsItem.documentUrl.isEmpty()}">
+                                                -
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="btn-group btn-group-sm">
+                                                <a th:href="@{/news/edit/{id}(id=${newsItem.id})}" class="btn btn-warning">
+                                                    <i data-feather="edit"></i>
+                                                </a>
+                                                <a href="#" th:onclick="'return confirmDelete(\'' + @{/news/delete/{id}(id=${newsItem.id})} + '\', \'news\')'" class="btn btn-danger">
+                                                    <i data-feather="trash-2"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr th:if="${#lists.isEmpty(newsList)}">
+                                        <td colspan="7" class="text-center">No news found</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div th:replace="fragments/layout :: scripts"></div>
+    <script>
+        // Initialize feather icons
+        feather.replace();
+    </script>
+</body>
+</html>

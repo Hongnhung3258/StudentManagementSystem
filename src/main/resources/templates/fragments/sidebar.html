@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sidebar</title>
+</head>
+<body>
+    <div class="col-auto sidebar" id="sidebar" th:fragment="sidebar">
+        <!-- Logo -->
+        <div class="text-center py-4">
+            <img src="https://via.placeholder.com/80x80.png?text=LOGO" alt="University Logo" class="img-fluid logo">
+            <h4 class="mt-2">Quản lý Đại học</h4>
+        </div>
+        
+        <!-- Navigation Menu -->
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/dashboard}">
+                    <i class="feather-icon" data-feather="home"></i>
+                    <span>Dashboard</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/students}">
+                    <i class="feather-icon" data-feather="users"></i>
+                    <span>Sinh viên</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/lecturers}">
+                    <i class="feather-icon" data-feather="user"></i>
+                    <span>Giảng viên</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/departments}">
+                    <i class="feather-icon" data-feather="briefcase"></i>
+                    <span>Khoa</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/courses}">
+                    <i class="feather-icon" data-feather="book"></i>
+                    <span>Môn học</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/classes}">
+                    <i class="feather-icon" data-feather="calendar"></i>
+                    <span>Lớp học</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/news}">
+                    <i class="feather-icon" data-feather="bell"></i>
+                    <span>Tin tức</span>
+                </a>
+            </li>
+            <li class="nav-item mt-auto">
+                <a class="nav-link" th:href="@{/logout}">
+                    <i class="feather-icon" data-feather="log-out"></i>
+                    <span>Đăng xuất</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+</body>
+</html>

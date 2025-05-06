@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - University Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <!-- Sidebar -->
+            <div th:replace="fragments/sidebar :: sidebar"></div>
+            
+            <!-- Red accent bar -->
+            <div class="accent-bar col-auto"></div>
+            
+            <!-- Main content -->
+            <div class="col content">
+                <div class="row mb-4">
+                    <div class="col">
+                        <h2>Dashboard</h2>
+                        <p>Welcome to the University Management System</p>
+                    </div>
+                </div>
+                
+                <!-- Statistics Row -->
+                <div class="row">
+                    <!-- Students Stats -->
+                    <div class="col-md-4">
+                        <div class="stats-card">
+                            <img src="https://cdn.jsdelivr.net/npm/feather-icons/dist/icons/users.svg" alt="Students" class="img-fluid">
+                            <h4 th:text="'Số sinh viên = ' + ${statistics.studentCount}">Students Count</h4>
+                        </div>
+                    </div>
+                    
+                    <!-- Teachers Stats -->
+                    <div class="col-md-4">
+                        <div class="stats-card">
+                            <img src="https://cdn.jsdelivr.net/npm/feather-icons/dist/icons/user.svg" alt="Teachers" class="img-fluid">
+                            <h4 th:text="'Số giảng viên = ' + ${statistics.lecturerCount}">Teachers Count</h4>
+                        </div>
+                    </div>
+                    
+                    <!-- Classes Stats -->
+                    <div class="col-md-4">
+                        <div class="stats-card">
+                            <img src="https://cdn.jsdelivr.net/npm/feather-icons/dist/icons/book-open.svg" alt="Classes" class="img-fluid">
+                            <h4 th:text="'Số lớp học = ' + ${statistics.classCount}">Classes Count</h4>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Recent Activities Section -->
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header bg-primary text-white">
+                                <h5 class="mb-0">Recent Activities</h5>
+                            </div>
+                            <div class="card-body">
+                                <p>Welcome to the University Management System dashboard.</p>
+                                <p>Use the sidebar menu to navigate through different sections of the application.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/main.js}"></script>
+</body>
+</html>
