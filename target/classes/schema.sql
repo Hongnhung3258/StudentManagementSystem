@@ -2,107 +2,154 @@
 
 -- Login table
 CREATE TABLE IF NOT EXISTS login (
-    stt INT AUTO_INCREMENT PRIMARY KEY,
-    tendangnhap VARCHAR(40) NOT NULL UNIQUE,
-    matkhau VARCHAR(255) NOT NULL
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(40) NOT NULL UNIQUE,
+    password VARCHAR(100) NOT NULL
+);
+
+CREATE TABLE persistent_logins (
+    username VARCHAR(40) NOT NULL,
+    series VARCHAR(64) PRIMARY KEY,
+    token VARCHAR(64) NOT NULL,
+    last_used TIMESTAMP NOT NULL
+    FOREIGN KEY (username) REFERENCES login(username)
 );
 
 -- Department table
-CREATE TABLE IF NOT EXISTS department (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    makhoa CHAR(4) NOT NULL UNIQUE,
-    tenkhoa VARCHAR(60) NOT NULL UNIQUE,
-    matruongkhoa CHAR(6)
+CREATE TABLE department (
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    department_code VARCHAR(4) UNIQUE,
+    department_name VARCHAR(60) NOT NULL,
+    head_lecturer_code VARCHAR(6)
 );
 
--- Lecturer table (create before adding the foreign key to department)
-CREATE TABLE IF NOT EXISTS lecturer (
+-- Lecturer table
+CREATE TABLE lecturer (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    maGV CHAR(6) NOT NULL UNIQUE,
-    tenkhoa VARCHAR(60),
-    hoten VARCHAR(50) NOT NULL,
-    gioitinh VARCHAR(3) NOT NULL CHECK (gioitinh IN ('Nam', 'Nữ')),
-    ngaysinh DATE NOT NULL,
-    sdt VARCHAR(15) UNIQUE,
-    diachi VARCHAR(100),
-    cccd CHAR(12) UNIQUE NOT NULL,
-    hocvi VARCHAR(50), 
-    chucvu VARCHAR(50),
-    matkhau CHAR(8) NOT NULL,
-    email VARCHAR(50) UNIQUE
+    lecturer_id CHAR(6) NOT NULL UNIQUE,
+    department_name VARCHAR(60),
+    full_name VARCHAR(50) NOT NULL,
+    gender ENUM('Nam', 'Nữ') NOT NULL,
+    date_of_birth DATE NOT NULL,
+    phone_number VARCHAR(15) UNIQUE,
+    address VARCHAR(100),
+    national_id CHAR(12) UNIQUE NOT NULL,
+    degree VARCHAR(50) CHECK (degree IN ('Cử nhân', 'Thạc sĩ', 'Tiến sĩ','PGS.TS', 'GS.TS', 'GS.TS.BS', 'PGS.TS.BS', 'TS.BS')), 
+    position VARCHAR(50) CHECK (position IN ('Trưởng khoa', 'Giảng viên', 'Trợ giảng', 'Phó trưởng khoa')),
+    password CHAR(8) NOT NULL,
+    email VARCHAR(50) GENERATED ALWAYS AS (CONCAT(lecturer_id, '@tchr.phenikaa-uni.edu.vn')) STORED UNIQUE,
+    CONSTRAINT fk_lecturer_department FOREIGN KEY (department_name) 
+        REFERENCES department(department_name) ON UPDATE CASCADE ON DELETE SET NULL
 );
-
--- Add foreign key to department after lecturer is created
--- We'll add this constraint after inserting initial data
--- ALTER TABLE department
--- ADD CONSTRAINT fk_lecturer_department 
--- FOREIGN KEY (matruongkhoa) REFERENCES lecturer(maGV)
--- ON UPDATE CASCADE
--- ON DELETE SET NULL;
 
 -- Student table
-CREATE TABLE IF NOT EXISTS student (
+CREATE TABLE student (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    khoa CHAR(2),
-    maSV CHAR(6) NOT NULL UNIQUE,
-    tenkhoa VARCHAR(60),
-    hoten VARCHAR(50) NOT NULL,
-    gioitinh VARCHAR(3) NOT NULL CHECK (gioitinh IN ('Nam', 'Nữ')),
-    ngaysinh DATE NOT NULL,
-    sdt VARCHAR(15) UNIQUE,
-    diachi VARCHAR(100),
-    cccd CHAR(12) UNIQUE NOT NULL,
-    matkhau CHAR(8) NOT NULL,
-    email VARCHAR(50) UNIQUE
+    intake CHAR(2),
+    student_id CHAR(6) NOT NULL UNIQUE,
+    department_name VARCHAR(60),
+    full_name VARCHAR(50) NOT NULL,
+    gender ENUM('Nam', 'Nữ') NOT NULL,
+    date_of_birth DATE NOT NULL,
+    phone_number VARCHAR(15) UNIQUE,
+    address VARCHAR(100),
+    national_id CHAR(12) UNIQUE NOT NULL,
+    password CHAR(8) NOT NULL,
+    email VARCHAR(50) GENERATED ALWAYS AS (CONCAT(student_id, '@st.phenikaa-uni.edu.vn')) STORED UNIQUE,
+    CONSTRAINT fk_student_department FOREIGN KEY (department_name) 
+        REFERENCES department(department_name) ON UPDATE CASCADE ON DELETE SET NULL
 );
-
--- Add foreign keys after all tables are created
--- We'll handle these constraints when we have data
--- ALTER TABLE student
--- ADD CONSTRAINT fk_student_department 
--- FOREIGN KEY (tenkhoa) REFERENCES department(tenkhoa)
--- ON UPDATE CASCADE
--- ON DELETE SET NULL;
-
--- ALTER TABLE lecturer
--- ADD CONSTRAINT fk_lecturer_department_tenkhoa 
--- FOREIGN KEY (tenkhoa) REFERENCES department(tenkhoa)
--- ON UPDATE CASCADE
--- ON DELETE SET NULL;
 
 -- Course table
-CREATE TABLE IF NOT EXISTS course (
+CREATE TABLE course (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    mamon CHAR(5) NOT NULL UNIQUE,
-    tenmon VARCHAR(100) NOT NULL UNIQUE,
-    tinchi TINYINT UNSIGNED NOT NULL,
-    tenkhoa VARCHAR(60)
+    course_code CHAR(5) NOT NULL UNIQUE,
+    course_name VARCHAR(100) NOT NULL UNIQUE,
+    credits TINYINT UNSIGNED CHECK (credits BETWEEN 1 AND 10) NOT NULL,
+    department_name VARCHAR(60),
+    CONSTRAINT fk_course_department FOREIGN KEY (department_name) 
+        REFERENCES department(department_name) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
+
 -- Class table
-CREATE TABLE IF NOT EXISTS class (
+CREATE TABLE class (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    malop CHAR(5) NOT NULL UNIQUE,
-    tenlop VARCHAR(100) NOT NULL,
-    tenmon VARCHAR(100),
-    tenkhoa VARCHAR(60),
-    soluongSV INT UNSIGNED DEFAULT 0,
-    maGV CHAR(6) NOT NULL,
-    namhoc CHAR(9) NOT NULL,
-    hocky TINYINT NOT NULL
+    class_code CHAR(5) NOT NULL UNIQUE,
+    class_name VARCHAR(100) NOT NULL,
+    course_name VARCHAR(100),
+    department_name VARCHAR(60),
+    student_count INT UNSIGNED DEFAULT 0 CHECK (student_count <= 500),
+    lecturer_id CHAR(6) NOT NULL,
+    academic_year CHAR(9) NOT NULL CHECK (academic_year REGEXP '^[0-9]{4}-[0-9]{4}$'),
+    semester TINYINT CHECK (semester BETWEEN 1 AND 4) NOT NULL,
+    CONSTRAINT fk_class_course FOREIGN KEY (course_name) 
+        REFERENCES course(course_name) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk_class_lecturer FOREIGN KEY (lecturer_id) 
+        REFERENCES lecturer(lecturer_id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk_class_department FOREIGN KEY (department_name) 
+        REFERENCES department(department_name) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
 -- News table
-CREATE TABLE IF NOT EXISTS news (
+CREATE TABLE news (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    matin CHAR(8) NOT NULL UNIQUE,
-    tieude VARCHAR(200) NOT NULL,
-    noidung TEXT NOT NULL,
-    tailieu_url VARCHAR(255),
-    ngaytao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    nguoitao VARCHAR(100)
+    news_code CHAR(8) NOT NULL UNIQUE,
+    title VARCHAR(200) NOT NULL,
+    content TEXT NOT NULL,
+    document_url VARCHAR(255),
+    image VARCHAR(255),
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    created_by VARCHAR(100)
 );
 
--- Add initial admin user
-INSERT IGNORE INTO login (tendangnhap, matkhau) 
-VALUES ('admin', 'admin123');
+-- Schedule table
+CREATE TABLE schedule (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    class_code CHAR(5) NOT NULL,
+    lecturer_id CHAR(6) NOT NULL,
+    classroom VARCHAR(20) NOT NULL,
+    start_period TINYINT UNSIGNED CHECK (start_period BETWEEN 1 AND 12) NOT NULL,
+    end_period TINYINT UNSIGNED CHECK (end_period BETWEEN 2 AND 12) NOT NULL,
+    weekday ENUM('Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy', 'Chủ nhật') NOT NULL,
+    start_date DATE NOT NULL,
+    academic_year CHAR(9) NOT NULL CHECK (academic_year REGEXP '^[0-9]{4}-[0-9]{4}$'),
+    semester TINYINT CHECK (semester BETWEEN 1 AND 4) NOT NULL,
+    schedule_summary VARCHAR(50) GENERATED ALWAYS AS (CONCAT(weekday, ' ', start_period, '-', end_period)) STORED,
+    UNIQUE (class_code, start_period, weekday, academic_year, semester),
+    UNIQUE (classroom, start_period, weekday, academic_year, semester),
+    UNIQUE (lecturer_id, start_period, weekday, academic_year, semester),
+    FOREIGN KEY (class_code) REFERENCES class(malop) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (lecturer_id) REFERENCES lecturer(maGV) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+
+-- Activity Log table
+CREATE TABLE activity_log (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    username VARCHAR(40) NOT NULL,
+    action VARCHAR(50) NOT NULL,
+    target VARCHAR(50) NOT NULL,
+    target_id BIGINT NOT NULL,
+    timestamp DATETIME NOT NULL,
+    CONSTRAINT fk_login_activity FOREIGN KEY (username) 
+        REFERENCES login(username) ON UPDATE CASCADE ON DELETE RESTRICT
+);
+
+-- Payment table
+CREATE TABLE payment (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id CHAR(6) NOT NULL,
+    payment_date DATE NOT NULL,
+    amount DECIMAL(15,2) NOT NULL CHECK (amount >= 0),
+    description VARCHAR(200) NOT NULL,
+    status ENUM('Xác nhận', 'Hết hạn', 'Đang chờ') NOT NULL DEFAULT 'Pending',
+    approved_by VARCHAR(40),
+    approval_date DATETIME,
+    CONSTRAINT fk_payment_student FOREIGN KEY (student_id) 
+        REFERENCES student(maSV) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk_payment_login FOREIGN KEY (approved_by) 
+        REFERENCES login(tendangnhap) ON UPDATE CASCADE ON DELETE SET NULL
+);
+
+
