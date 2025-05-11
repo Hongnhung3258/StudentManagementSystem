@@ -1,7 +1,7 @@
 -- Initialize database schema for the University Management System
 
 -- Login table
-CREATE TABLE IF NOT EXISTS login (
+CREATE TABLE login (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(40) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL
