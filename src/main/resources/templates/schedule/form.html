@@ -173,7 +173,17 @@
       <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
         <h1 class="h2" th:text="${pageTitle}">Tạo lịch học mới</h1>
       </div>
-
+       
+        <!--Thông báo-->
+      <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+        <span th:text="${successMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+      <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
+        <span th:text="${errorMessage}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+        
       <div class="card">
         <div class="card-header">
           <strong th:text="${schedule.id != null} ? 'Chỉnh sửa lịch học' : 'Tạo lịch học mới'">Tạo lịch học mới</strong>
@@ -186,17 +196,17 @@
               <div class="col-md-4">
                 <label for="classId" class="form-label">Mã lớp <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="classId" th:field="*{classId}" required 
-                       maxlength="5" placeholder="Ví dụ: LH001" />
+                       maxlength="5" placeholder="Ví dụ: 00001" />
               </div>
               <div class="col-md-4">
                 <label for="lecturerId" class="form-label">Mã giảng viên <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="lecturerId" th:field="*{lecturerId}" required 
-                       maxlength="6" placeholder="Ví dụ: GV001" />
+                       maxlength="6" placeholder="Ví dụ: 146711" />
               </div>
               <div class="col-md-4">
                 <label for="classroom" class="form-label">Phòng học <span class="text-danger">*</span></label>
                 <input type="text" class="form-control" id="classroom" th:field="*{classroom}" required 
-                       maxlength="20" placeholder="Ví dụ: P101" />
+                       maxlength="20" placeholder="Ví dụ: P202 - Tòa A2" />
               </div>
             </div>
             
@@ -206,6 +216,12 @@
                 <select class="form-select" id="dayOfWeek" th:field="*{dayOfWeek}" required>
                   <option value="" selected disabled>Chọn thứ</option>
                   <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ hai</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ ba</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ tư</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ năm</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ sáu</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ bảy</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Chủ nhật</option>
                 </select>
               </div>
               <div class="col-md-4">
@@ -213,13 +229,136 @@
                 <select class="form-select" id="startPeriod" th:field="*{startPeriod}" required>
                   <option value="" selected disabled>Chọn tiết</option>
                   <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">1</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">2</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">3</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">4</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">5</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">6</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">7</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">8</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">9</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">10</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">11</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">12</option>
                 </select>
               </div>
               <div class="col-md-4">
                 <label for="endPeriod" class="form-label">Tiết kết thúc <span class="text-danger">*</span></label>
                 <select class="form-select" id="endPeriod" th:field="*{endPeriod}" required>
                   <option value="" selected disabled>Chọn tiết</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">2</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">3</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">4</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">5</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">6</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">7</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">8</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">9</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">10</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">11</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">12</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label for="dayOfWeek" class="form-label">Thứ <span class="text-danger">*</span></label>
+                <select class="form-select" id="dayOfWeek" th:field="*{dayOfWeek}" required>
+                  <option value="" selected disabled>Chọn thứ</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ hai</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ ba</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ tư</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ năm</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ sáu</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ bảy</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Chủ nhật</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="startPeriod" class="form-label">Tiết bắt đầu <span class="text-danger">*</span></label>
+                <select class="form-select" id="startPeriod" th:field="*{startPeriod}" required>
+                  <option value="" selected disabled>Chọn tiết</option>
                   <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">1</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">2</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">3</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">4</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">5</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">6</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">7</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">8</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">9</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">10</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">11</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">12</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="endPeriod" class="form-label">Tiết kết thúc <span class="text-danger">*</span></label>
+                <select class="form-select" id="endPeriod" th:field="*{endPeriod}" required>
+                  <option value="" selected disabled>Chọn tiết</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">2</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">3</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">4</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">5</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">6</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">7</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">8</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">9</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">10</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">11</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">12</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label for="dayOfWeek" class="form-label">Thứ <span class="text-danger">*</span></label>
+                <select class="form-select" id="dayOfWeek" th:field="*{dayOfWeek}" required>
+                  <option value="" selected disabled>Chọn thứ</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ hai</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ ba</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ tư</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ năm</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ sáu</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Thứ bảy</option>
+                  <option th:each="day : ${daysOfWeek}" th:value="${day}" th:text="${day}">Chủ nhật</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="startPeriod" class="form-label">Tiết bắt đầu <span class="text-danger">*</span></label>
+                <select class="form-select" id="startPeriod" th:field="*{startPeriod}" required>
+                  <option value="" selected disabled>Chọn tiết</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">1</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">2</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">3</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">4</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">5</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">6</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">7</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">8</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">9</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">10</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">11</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">12</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label for="endPeriod" class="form-label">Tiết kết thúc <span class="text-danger">*</span></label>
+                <select class="form-select" id="endPeriod" th:field="*{endPeriod}" required>
+                  <option value="" selected disabled>Chọn tiết</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">2</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">3</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">4</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">5</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">6</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">7</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">8</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">9</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">10</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">11</option>
+                  <option th:each="period : ${periods}" th:value="${period}" th:text="${period}">12</option>
                 </select>
               </div>
             </div>
