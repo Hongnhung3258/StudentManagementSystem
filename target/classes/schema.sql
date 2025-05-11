@@ -1,4 +1,5 @@
--- Initialize database schema for the University Management System
+create database university;
+use university;
 
 -- Login table
 CREATE TABLE login (
@@ -11,15 +12,15 @@ CREATE TABLE persistent_logins (
     username VARCHAR(40) NOT NULL,
     series VARCHAR(64) PRIMARY KEY,
     token VARCHAR(64) NOT NULL,
-    last_used TIMESTAMP NOT NULL
+    last_used TIMESTAMP NOT NULL,
     FOREIGN KEY (username) REFERENCES login(username)
 );
 
 -- Department table
 CREATE TABLE department (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    department_code VARCHAR(4) UNIQUE,
-    department_name VARCHAR(60) NOT NULL,
+    department_code VARCHAR(4) NOT NULL UNIQUE,
+    department_name VARCHAR(60) NOT NULL UNIQUE,
     head_lecturer_code VARCHAR(6)
 );
 
@@ -109,19 +110,21 @@ CREATE TABLE schedule (
     class_code CHAR(5) NOT NULL,
     lecturer_id CHAR(6) NOT NULL,
     classroom VARCHAR(20) NOT NULL,
-    start_period TINYINT UNSIGNED CHECK (start_period BETWEEN 1 AND 12) NOT NULL,
-    end_period TINYINT UNSIGNED CHECK (end_period BETWEEN 2 AND 12) NOT NULL,
+    start_period TINYINT UNSIGNED NOT NULL CHECK (start_period BETWEEN 1 AND 12),
+    end_period TINYINT UNSIGNED NOT NULL CHECK (end_period BETWEEN 2 AND 12),
     weekday ENUM('Thứ hai', 'Thứ ba', 'Thứ tư', 'Thứ năm', 'Thứ sáu', 'Thứ bảy', 'Chủ nhật') NOT NULL,
     start_date DATE NOT NULL,
     academic_year CHAR(9) NOT NULL CHECK (academic_year REGEXP '^[0-9]{4}-[0-9]{4}$'),
-    semester TINYINT CHECK (semester BETWEEN 1 AND 4) NOT NULL,
+    semester TINYINT NOT NULL CHECK (semester BETWEEN 1 AND 4),
     schedule_summary VARCHAR(50) GENERATED ALWAYS AS (CONCAT(weekday, ' ', start_period, '-', end_period)) STORED,
     UNIQUE (class_code, start_period, weekday, academic_year, semester),
     UNIQUE (classroom, start_period, weekday, academic_year, semester),
     UNIQUE (lecturer_id, start_period, weekday, academic_year, semester),
-    FOREIGN KEY (class_code) REFERENCES class(malop) ON UPDATE CASCADE ON DELETE CASCADE,
-    FOREIGN KEY (lecturer_id) REFERENCES lecturer(maGV) ON UPDATE CASCADE ON DELETE RESTRICT
+    FOREIGN KEY (class_code) REFERENCES class(class_code) ON UPDATE CASCADE ON DELETE CASCADE,
+    FOREIGN KEY (lecturer_id) REFERENCES lecturer(lecturer_id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
+
+
 
 
 -- Activity Log table
@@ -143,13 +146,14 @@ CREATE TABLE payment (
     payment_date DATE NOT NULL,
     amount DECIMAL(15,2) NOT NULL CHECK (amount >= 0),
     description VARCHAR(200) NOT NULL,
-    status ENUM('Xác nhận', 'Hết hạn', 'Đang chờ') NOT NULL DEFAULT 'Pending',
+    status ENUM('Xác nhận', 'Đang chờ', 'Hết hạn') NOT NULL DEFAULT 'Đang chờ',
     approved_by VARCHAR(40),
     approval_date DATETIME,
-    CONSTRAINT fk_payment_student FOREIGN KEY (student_id) 
-        REFERENCES student(maSV) ON UPDATE CASCADE ON DELETE RESTRICT,
-    CONSTRAINT fk_payment_login FOREIGN KEY (approved_by) 
-        REFERENCES login(tendangnhap) ON UPDATE CASCADE ON DELETE SET NULL
+    CONSTRAINT fk_payment_student FOREIGN KEY (student_id)
+        REFERENCES student(student_id) ON UPDATE CASCADE ON DELETE RESTRICT,
+    CONSTRAINT fk_payment_login FOREIGN KEY (approved_by)
+        REFERENCES login(username) ON UPDATE CASCADE ON DELETE SET NULL
 );
+
 
 
