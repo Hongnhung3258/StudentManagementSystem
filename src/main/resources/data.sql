@@ -1,7 +1,7 @@
 -- Initial data for the University Management System
 
 -- Insert initial departments
-INSERT INTO department (makhoa, tenkhoa, matruongkhoa)
+INSERT INTO department (department_code, department_name, head_lecturer_code)
 VALUES
     (1022, 'Khách sạn', '144924'),
     (1021, 'Ngôn ngữ Hàn Quốc', NULL),
@@ -28,16 +28,18 @@ VALUES
     (1000, 'Công nghệ thông tin', '144690');
 
 -- Insert an admin account  
-INSERT INTO login (tendangnhap, matkhau)
-VALUES
-('admin', '12345678'),
-('admin1', '23456789'),
-('admin2', '00000000'),
-('admin3', '46572387'),
-('admin4', '12345678');
+INSERT INTO login (username, password, role)
+VALUES 
+('admin', '12345678', 'Admin'),
+('admin1', '23456789', 'Admin'),
+('admin2', '00000000', 'Admin'),
+('admin3', '46572387', 'Admin'),
+('admin4', '12345678', 'Admin');
+('200177', '1111111', 'Student');
+('140210', '12345678', 'Lecturer');
 
 -- Insert initial lecturer data
-INSERT INTO lecturer (maGV, tenkhoa, hoten, gioitinh, ngaysinh, sdt, diachi, cccd, hocvi, chucvu, matkhau, email)
+INSERT INTO lecturer (lecturer_id, department_name, full_name, gender, date_of_birth, phone_number, address, national_id, degree, position, password)
 VALUES
     ('143941', 'Ngôn ngữ Nhật Bản', 'Trương Thị Mai', 'Nữ', '1979-04-03', '0983360522', 'Tầng 11 - A9', '038254667854', 'Tiến sĩ', 'Trưởng khoa', '5C*snavs', '143941@tchr.phenikaa-uni.edu.vn'),
     ('147002', 'Khoa học Đông Phương', 'Nguyễn Văn Khang', 'Nam', '1967-07-21', '0912118665', 'Tầng 12 - A9', '038254678452', 'GS.TS', 'Trưởng khoa', 'G4I@1wwX', '147002@tchr.phenikaa-uni.edu.vn'),
@@ -87,7 +89,8 @@ VALUES
     ('140030', NULL, 'Hoàng Thị Duyên', 'Nữ', '1986-06-12', '0912345030', 'P105/T26 - A10', '001986000030', 'Thạc sĩ', 'Giảng viên', 'Pl*3mP@8');
 
 -- Insert initial course data
-INSERT INTO course (mamon, tenmon, tinchi, tenkhoa) VALUES
+INSERT INTO course (course_code, course_name, credits, department_name)
+VALUES
     ('00001', 'Lập trình Java', 3, 'Công nghệ thông tin'),
     ('00002', 'Cơ sở dữ liệu', 3, 'Công nghệ thông tin'),
     ('00003', 'Trí tuệ nhân tạo', 4, 'Công nghệ thông tin'),
@@ -140,7 +143,8 @@ INSERT INTO course (mamon, tenmon, tinchi, tenkhoa) VALUES
     ('00050', 'Triết học Mác-Lênin', 2, NULL);
 
 -- Insert class data
-INSERT INTO class (malop, tenlop, tenmon, tenkhoa, soluongSV, maGV, namhoc, hocky) VALUES
+INSERT INTO class (class_code, class_name, course_name, department_name, student_count, lecturer_id, academic_year, semester)
+VALUES
     ('00001', 'Lớp Lập trình Java HK1 2023-2024', 'Lập trình Java', 'Công nghệ thông tin', 30, '140001', '2023-2024', 1),
     ('00002', 'Lớp Cơ sở dữ liệu HK2 2023-2024', 'Cơ sở dữ liệu', 'Công nghệ thông tin', 35, '140002', '2023-2024', 2),
     ('00003', 'Lớp Trí tuệ nhân tạo HK1 2024-2025', 'Trí tuệ nhân tạo', 'Công nghệ thông tin', 25, '140001', '2024-2025', 1),
@@ -183,7 +187,8 @@ INSERT INTO class (malop, tenlop, tenmon, tenkhoa, soluongSV, maGV, namhoc, hock
     ('00040', 'Lớp Tiếng Trung thương mại HK1 2025-2026', 'Tiếng Trung thương mại', 'Ngôn ngữ Trung Quốc', 30, '140027', '2025-2026', 1);
 
 -- Insert initial student data
-INSERT INTO student (khoa, maSV, tenkhoa, hoten, gioitinh, ngaysinh, sdt, diachi, cccd, matkhau) VALUES
+INSERT INTO student (intake, student_id, department_name, full_name, gender, date_of_birth, phone_number, address, national_id, password)
+VALUES
     ('14', '200001', 'Công nghệ thông tin', 'Nguyễn Văn An', 'Nam', '2002-03-15', '0935123001', 'Hà Nội', '001202000001', 'Kj#9mP$2'),
     ('14', '200002', 'Kỹ thuật ô tô và Năng lượng', 'Trần Thị Bình', 'Nữ', '2002-07-22', '0935123002', 'TP.HCM', '001202000002', 'Xy@5vN!8'),
     ('14', '200003', 'Kinh tế và Kinh doanh', 'Lê Minh Châu', 'Nam', '2002-05-10', '0935123003', 'Đà Nẵng', '001202000003', 'Zm*3kQ$7'),
@@ -197,7 +202,8 @@ INSERT INTO student (khoa, maSV, tenkhoa, hoten, gioitinh, ngaysinh, sdt, diachi
     ('16', '220004', 'Công nghệ thông tin', 'Phạm Thị Z', 'Nữ', '2004-05-15', '0935123024', 'Hải Phòng', '001204000024', 'Rw#8pL@6');
 
 -- Insert news data
-INSERT INTO news (matin, tieude, noidung, tailieu_url, hinhanh, ngaytao, nguoitao) VALUES
+INSERT INTO news (news_code, title, content, document_url, image, created_at, created_by)
+VALUES 
     ('TT000001', 'Khai giảng năm học mới 2025', 'Lễ khai giảng năm học 2025 sẽ diễn ra vào ngày 5/9/2025 tại hội trường lớn. Sinh viên vui lòng có mặt đúng giờ.', '/uploads/khaigiang_2025.pdf', '/uploads/khaigiang_2025.jpg', '2025-09-01 08:00:00', 'Admin'),
     ('TT000002', 'Hội thảo công nghệ AI 2025', 'Hội thảo về trí tuệ nhân tạo sẽ tổ chức vào ngày 15/10/2025 tại phòng hội thảo A1. Đăng ký trước ngày 10/10.', NULL, '/uploads/ai_seminar_2025.jpg', '2025-10-01 09:30:00', 'Nguyễn Văn A'),
     ('TT000003', 'Thông báo tuyển sinh 2025', 'Thông báo tuyển sinh đại học năm 2025. Hạn nộp hồ sơ: 30/6/2025. Xem chi tiết tại website trường.', '/uploads/tuyensinh_2025.pdf', NULL, '2025-06-01 10:00:00', 'Trần Thị B'),
@@ -206,7 +212,8 @@ INSERT INTO news (matin, tieude, noidung, tailieu_url, hinhanh, ngaytao, nguoita
     ('TT000006', 'Cuộc thi lập trình PTIT Code 2025', 'Cuộc thi lập trình dành cho sinh viên sẽ tổ chức vào 25/12/2025. Đăng ký tại phòng đào tạo.', '/uploads/ptitcode_2025.pdf', '/uploads/ptitcode_2025.jpg', '2025-12-10 11:00:00', 'Phạm Văn D');
 
 -- Insert activity log data
-INSERT INTO activity_log (tendangnhap, hoatdong, muctieu, id_muctieu, ngaygio) VALUES
+INSERT INTO activity_log (username, action, target, target_id, timestamp)
+VALUES
     ('admin', 'Thêm', 'Sinh viên', 1, '2023-09-01 08:00:00'),
     ('admin2', 'Sửa', 'Giảng viên', 2, '2023-11-05 10:30:00'),
     ('admin2', 'Xóa', 'Lớp học', 3, '2024-04-20 10:00:00'),
@@ -215,7 +222,8 @@ INSERT INTO activity_log (tendangnhap, hoatdong, muctieu, id_muctieu, ngaygio) V
     ('admin2', 'Xác nhận', 'Thanh toán', 6, '2023-10-02 09:15:00');
 
 -- Insert payment data 
-INSERT INTO payment (maSV, ngay, sotien, mota, trangthai, nguoiduyet, ngaypheduyet) VALUES
+INSERT INTO payment (student_id, payment_date, amount, description, status, approved_by, approval_date)
+VALUES 
     ('200001', '2023-09-01', 15000000.00, 'Học phí kỳ 1/2023', 'Xác nhận', 'admin', '2023-09-02 10:00:00'),
     ('200001', '2024-01-15', 2000000.00, 'Phí ký túc xá kỳ 1/2024', 'Đang chờ', NULL, NULL),
     ('210001', '2024-09-01', 18000000.00, 'Học phí kỳ 1/2024', 'Xác nhận', 'admin', '2024-09-02 08:30:00'),
@@ -225,7 +233,8 @@ INSERT INTO payment (maSV, ngay, sotien, mota, trangthai, nguoiduyet, ngaypheduy
     ('220004', '2025-12-01', 200000.00, 'Phí tham gia hội thảo CNTT', 'Hết hạn', NULL, NULL);
 
 -- Insert schedule data
-INSERT INTO schedule (malop, magv, phonghoc, tietbd, tietkt, thu, ngaybd, namhoc, hocky) VALUES
+INSERT INTO schedule (class_code, lecturer_id, classroom, start_period, end_period, weekday, start_date, academic_year, semester) 
+VALUES
     ('00001', '140001', 'A1-101', 1, 3, 'Thứ hai', '2023-09-04', '2023-2024', 1),
     ('00002', '140002', 'A2-202', 4, 6, 'Thứ ba', '2024-01-10', '2023-2024', 2),
     ('00003', '140001', 'A1-103', 7, 9, 'Thứ tư', '2024-09-02', '2024-2025', 1),
