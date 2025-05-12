@@ -19,7 +19,7 @@ CREATE TABLE persistent_logins (
 
 -- Department table
 CREATE TABLE department (
-    id BIGINT PRIMARY KEY AUTO_INCREMENT,
+    id INT PRIMARY KEY AUTO_INCREMENT,
     department_code VARCHAR(4) NOT NULL UNIQUE,
     department_name VARCHAR(60) NOT NULL UNIQUE,
     head_lecturer_code VARCHAR(6)
@@ -27,7 +27,7 @@ CREATE TABLE department (
 
 -- Lecturer table
 CREATE TABLE lecturer (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     lecturer_id CHAR(6) NOT NULL UNIQUE,
     department_name VARCHAR(60),
     full_name VARCHAR(50) NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE lecturer (
 
 -- Student table
 CREATE TABLE student (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     intake CHAR(2),
     student_id CHAR(6) NOT NULL UNIQUE,
     department_name VARCHAR(60),
@@ -80,7 +80,7 @@ CREATE TABLE course (
 
 -- Class table
 CREATE TABLE class (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     class_code CHAR(5) NOT NULL UNIQUE,
     class_name VARCHAR(100) NOT NULL,
     course_name VARCHAR(100),
@@ -106,12 +106,15 @@ CREATE TABLE news (
     document_url VARCHAR(255),
     image VARCHAR(255),
     created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    created_by VARCHAR(100)
+    author VARCHAR(100),
+    created_by VARCHAR(40),
+    CONSTRAINT fk_news_created_by FOREIGN KEY (created_by) 
+    REFERENCES login(username)
 );
 
 -- Schedule table
 CREATE TABLE schedule (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     class_code CHAR(5) NOT NULL,
     lecturer_id CHAR(6) NOT NULL,
     classroom VARCHAR(20) NOT NULL,
@@ -129,12 +132,9 @@ CREATE TABLE schedule (
     FOREIGN KEY (lecturer_id) REFERENCES lecturer(lecturer_id) ON UPDATE CASCADE ON DELETE RESTRICT
 );
 
-
-
-
 -- Activity Log table
 CREATE TABLE activity_log (
-    id INT PRIMARY KEY AUTO_INCREMENT,
+    id BIGINT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(40) NOT NULL,
     action VARCHAR(50) NOT NULL,
     target VARCHAR(50) NOT NULL,
@@ -146,7 +146,7 @@ CREATE TABLE activity_log (
 
 -- Payment table
 CREATE TABLE payment (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
     student_id CHAR(6) NOT NULL,
     payment_date DATE NOT NULL,
     amount DECIMAL(15,2) NOT NULL CHECK (amount >= 0),
@@ -159,3 +159,4 @@ CREATE TABLE payment (
     CONSTRAINT fk_payment_login FOREIGN KEY (approved_by)
         REFERENCES login(username) ON UPDATE CASCADE ON DELETE SET NULL
 );
+
