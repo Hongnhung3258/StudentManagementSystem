@@ -4,9 +4,9 @@ use university;
 -- Login table
 CREATE TABLE login (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
-    username VARCHAR(40) NOT NULL UNIQUE,
+    username VARCHAR(50) NOT NULL UNIQUE,
     password VARCHAR(100) NOT NULL,
-    role VARCHAR(20) NOT NULL CHECK (role IN ('Admin', 'Student', 'Lecturer'))
+    role VARCHAR(20) NOT NULL CHECK (role IN ('Admin', 'Student', 'Lecturer'))  
 );
 
 CREATE TABLE persistent_logins (
@@ -41,7 +41,9 @@ CREATE TABLE lecturer (
     password CHAR(8) NOT NULL,
     email VARCHAR(50) GENERATED ALWAYS AS (CONCAT(lecturer_id, '@tchr.phenikaa-uni.edu.vn')) STORED UNIQUE,
     CONSTRAINT fk_lecturer_department FOREIGN KEY (department_name) 
-        REFERENCES department(department_name) ON UPDATE CASCADE ON DELETE SET NULL
+        REFERENCES department(department_name) ON UPDATE CASCADE ON DELETE SET NULL,
+	CONSTRAINT fk_lecturer_login FOREIGN KEY (email) 
+        REFERENCES login(username)
 );
 
 -- Student table
@@ -59,7 +61,9 @@ CREATE TABLE student (
     password CHAR(8) NOT NULL,
     email VARCHAR(50) GENERATED ALWAYS AS (CONCAT(student_id, '@st.phenikaa-uni.edu.vn')) STORED UNIQUE,
     CONSTRAINT fk_student_department FOREIGN KEY (department_name) 
-        REFERENCES department(department_name) ON UPDATE CASCADE ON DELETE SET NULL
+        REFERENCES department(department_name) ON UPDATE CASCADE ON DELETE SET NULL,
+	CONSTRAINT fk_student_login FOREIGN KEY (email) 
+		REFERENCES login(username)
 );
 
 -- Course table
@@ -155,6 +159,3 @@ CREATE TABLE payment (
     CONSTRAINT fk_payment_login FOREIGN KEY (approved_by)
         REFERENCES login(username) ON UPDATE CASCADE ON DELETE SET NULL
 );
-
-
-
