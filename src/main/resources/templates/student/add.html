@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Thêm/Sửa Sinh viên - Hệ thống Quản lý Đại học</title>
+    <title th:text="${pageTitle} ?: 'Thêm Sinh viên'">Thêm Sinh viên</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.css" rel="stylesheet">
     <style>
@@ -82,7 +82,7 @@
 <body>
     
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="#">Quản lý Đại học</a>
+    <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3" href="/dashboard">Quản lý Đại học</a>
     <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
@@ -90,6 +90,7 @@
     <div class="navbar-nav">
         <div class="nav-item text-nowrap">
             <form th:action="@{/logout}" method="post" style="display: inline;">
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
                 <button type="submit" class="nav-link px-3 bg-dark border-0">Đăng xuất</button>
             </form>
         </div>
@@ -128,7 +129,7 @@
                     <li class="nav-item">
                         <a class="nav-link" href="/courses">
                             <span data-feather="book"></span>
-                            Môn học
+                            Học phần
                         </a>
                     </li>
                     <li class="nav-item">
@@ -173,18 +174,18 @@
 
         <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
             <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-                <h1 class="h2" th:text="${student.id != null} ? 'Chỉnh sửa Sinh viên' : 'Thêm Sinh viên'">Thêm Sinh viên</h1>
+                <h1 class="h2" th:text="${pageTitle}">Tạo sinh viên mới</h1>
             </div>
 
             <!-- Thông báo thành công / lỗi -->
-<!--            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
+            <div th:if="${successMessage}" class="alert alert-success alert-dismissible fade show" role="alert">
                 <span th:text="${successMessage}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
             <div th:if="${errorMessage}" class="alert alert-danger alert-dismissible fade show" role="alert">
                 <span th:text="${errorMessage}"></span>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>-->
+            </div>
 
             <div class="card">
                 <div class="card-header">
@@ -196,31 +197,19 @@
                         
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="yearCode" class="form-label">Mã năm nhập học <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="yearCode" th:field="*{yearCode}" 
-                                    maxlength="2" placeholder="Ví dụ: 23" required 
-                                    th:classappend="${#fields.hasErrors('yearCode')} ? 'is-invalid' : ''">
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('yearCode')}" th:errors="*{yearCode}">
+                                <label for="intake" class="form-label">Mã năm nhập học <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="intake" th:field="*{intake}" 
+                                       maxlength="2" placeholder="Ví dụ: 23" required 
+                                       th:classappend="${#fields.hasErrors('intake')} ? 'is-invalid' : ''">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('intake')}" th:errors="*{intake}">
                                     Lỗi mã năm nhập học
                                 </div>
                                 <small class="text-muted">2 chữ số (ví dụ: 23 cho năm 2023)</small>
                             </div>
                             <div class="col-md-6">
-                                <label for="studentCode" class="form-label">Mã sinh viên</label>
-                                <input type="text" class="form-control" id="studentCode" th:field="*{studentCode}" 
-                                    maxlength="10" th:readonly="${student.studentCode != null && !student.studentCode.isEmpty()}" 
-                                    placeholder="Ví dụ: SV290001" th:classappend="${#fields.hasErrors('studentCode')} ? 'is-invalid' : ''">
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('studentCode')}" th:errors="*{studentCode}">
-                                    Lỗi mã sinh viên
-                                </div>
-                                <small class="text-muted">Tối đa 10 ký tự. Sẽ tự động tạo dựa trên khóa nhập học</small>
-                            </div>
-                        </div>
-                        
-                        <div class="row mb-3">
-                            <div class="col-md-6">
                                 <label for="departmentName" class="form-label">Khoa <span class="text-danger">*</span></label>
-                                <select class="form-select" id="departmentName" th:field="*{departmentName}" required>
+                                <select class="form-select" id="departmentName" th:field="*{departmentName}" required
+                                        th:classappend="${#fields.hasErrors('departmentName')} ? 'is-invalid' : ''">
                                     <option value="">-- Chọn Khoa --</option>
                                     <option th:each="dept : ${departments}" 
                                             th:value="${dept.departmentName}" 
@@ -232,68 +221,69 @@
                                     Lỗi chọn khoa
                                 </div>
                             </div>
+                        </div>
+                        
+                        <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="fullName" class="form-label">Họ và tên <span class="text-danger">*</span></label>
                                 <input type="text" class="form-control" id="fullName" th:field="*{fullName}" 
-                                    required maxlength="100" placeholder="Ví dụ: Nguyễn Văn A" 
-                                    th:classappend="${#fields.hasErrors('fullName')} ? 'is-invalid' : ''">
+                                       required maxlength="100" placeholder="Ví dụ: Nguyễn Văn A" 
+                                       th:classappend="${#fields.hasErrors('fullName')} ? 'is-invalid' : ''">
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">
                                     Lỗi họ và tên
                                 </div>
                             </div>
-                        </div>
-                        
-                        <div class="row mb-3">
                             <div class="col-md-6">
                                 <label for="gender" class="form-label">Giới tính <span class="text-danger">*</span></label>
-                                <select class="form-select" id="gender" th:field="*{gender}" required>
+                                <select class="form-select" id="gender" th:field="*{gender}" required
+                                        th:classappend="${#fields.hasErrors('gender')} ? 'is-invalid' : ''">
                                     <option value="">-- Chọn Giới tính --</option>
                                     <option value="Nam">Nam</option>
                                     <option value="Nữ">Nữ</option>
                                 </select>
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('gender')} ? 'is-invalid' : ''" th:errors="*{gender}">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}">
                                     Lỗi chọn giới tính
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="dateOfBirth" class="form-label">Ngày sinh <span class="text-danger">*</span></label>
-                                <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" 
-                                    required th:classappend="${#fields.hasErrors('dateOfBirth')} ? 'is-invalid' : ''">
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">
-                                    Lỗi ngày sinh
                                 </div>
                             </div>
                         </div>
                         
                         <div class="row mb-3">
                             <div class="col-md-6">
+                                <label for="dateOfBirth" class="form-label">Ngày sinh <span class="text-danger">*</span></label>
+                                <input type="date" class="form-control" id="dateOfBirth" th:field="*{dateOfBirth}" 
+                                       required th:classappend="${#fields.hasErrors('dateOfBirth')} ? 'is-invalid' : ''">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}">
+                                    Lỗi ngày sinh
+                                </div>
+                            </div>
+                            <div class="col-md-6">
                                 <label for="phoneNumber" class="form-label">Số điện thoại <span class="text-danger">*</span></label>
                                 <input type="tel" class="form-control" id="phoneNumber" th:field="*{phoneNumber}" 
-                                    maxlength="15" placeholder="Ví dụ: 0123456789" required 
-                                    th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid' : ''">
+                                       maxlength="15" placeholder="Ví dụ: 0123456789" required 
+                                       th:classappend="${#fields.hasErrors('phoneNumber')} ? 'is-invalid' : ''">
                                 <div class="invalid-feedback" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">
                                     Lỗi số điện thoại
                                 </div>
                                 <small class="text-muted">Số điện thoại từ 10-15 chữ số</small>
                             </div>
-                            <div class="col-md-6">
-                                <label for="address" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="address" th:field="*{address}" 
-                                    maxlength="255" placeholder="Ví dụ: 123 Đường ABC" required 
-                                    th:classappend="${#fields.hasErrors('address')} ? 'is-invalid' : ''">
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
-                                    Lỗi địa chỉ
-                                </div>
-                            </div>
                         </div>
                         
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label for="idNumber" class="form-label">Số CCCD <span class="text-danger">*</span></label>
-                                <input type="text" class="form-control" id="idNumber" th:field="*{idNumber}" 
-                                    required maxlength="12" placeholder="Ví dụ: 123456789012" 
-                                    th:classappend="${#fields.hasErrors('idNumber')} ? 'is-invalid' : ''">
-                                <div class="invalid-feedback" th:if="${#fields.hasErrors('idNumber')}" th:errors="*{idNumber}">
+                                <label for="address" class="form-label">Địa chỉ <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="address" th:field="*{address}" 
+                                       maxlength="255" placeholder="Ví dụ: 123 Đường ABC" required 
+                                       th:classappend="${#fields.hasErrors('address')} ? 'is-invalid' : ''">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">
+                                    Lỗi địa chỉ
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="nationalId" class="form-label">Số CCCD <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" id="nationalId" th:field="*{nationalId}" 
+                                       required maxlength="12" placeholder="Ví dụ: 123456789012" 
+                                       th:classappend="${#fields.hasErrors('nationalId')} ? 'is-invalid' : ''">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('nationalId')}" th:errors="*{nationalId}">
                                     Lỗi số CCCD
                                 </div>
                                 <small class="text-muted">Số CCCD phải có 12 chữ số</small>
@@ -317,27 +307,15 @@
     document.addEventListener('DOMContentLoaded', function() {
         feather.replace();
         
-        // Validate year code
-        const yearCodeInput = document.getElementById('yearCode');
-        yearCodeInput.addEventListener('input', function() {
-            const value = yearCodeInput.value;
+        // Validate intake
+        const intakeInput = document.getElementById('intake');
+        intakeInput.addEventListener('input', function() {
+            const value = intakeInput.value;
             if (value && !/^[0-9]{2}$/.test(value)) {
-                yearCodeInput.classList.add('is-invalid');
-                yearCodeInput.nextElementSibling.textContent = 'Mã năm nhập học phải có 2 chữ số';
+                intakeInput.classList.add('is-invalid');
+                intakeInput.nextElementSibling.textContent = 'Mã năm nhập học phải có 2 chữ số';
             } else {
-                yearCodeInput.classList.remove('is-invalid');
-            }
-        });
-
-        // Validate student code length
-        const studentCodeInput = document.getElementById('studentCode');
-        studentCodeInput.addEventListener('input', function() {
-            const value = studentCodeInput.value;
-            if (value && value.length > 10) {
-                studentCodeInput.classList.add('is-invalid');
-                studentCodeInput.nextElementSibling.textContent = 'Mã sinh viên tối đa 10 ký tự';
-            } else {
-                studentCodeInput.classList.remove('is-invalid');
+                intakeInput.classList.remove('is-invalid');
             }
         });
 
@@ -377,15 +355,15 @@
             }
         });
 
-        // Validate ID number
-        const idNumberInput = document.getElementById('idNumber');
-        idNumberInput.addEventListener('input', function() {
-            const value = idNumberInput.value;
+        // Validate national ID
+        const nationalIdInput = document.getElementById('nationalId');
+        nationalIdInput.addEventListener('input', function() {
+            const value = nationalIdInput.value;
             if (value && !/^[0-9]{12}$/.test(value)) {
-                idNumberInput.classList.add('is-invalid');
-                idNumberInput.nextElementSibling.textContent = 'Số CCCD phải có 12 chữ số';
+                nationalIdInput.classList.add('is-invalid');
+                nationalIdInput.nextElementSibling.textContent = 'Số CCCD phải có 12 chữ số';
             } else {
-                idNumberInput.classList.remove('is-invalid');
+                nationalIdInput.classList.remove('is-invalid');
             }
         });
     });
