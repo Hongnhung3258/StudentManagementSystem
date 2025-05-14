@@ -1,7 +1,6 @@
-create database university;
-use university;
+create database ums;
+use ums;
 
--- Login table
 CREATE TABLE login (
     id BIGINT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) NOT NULL UNIQUE,
@@ -25,10 +24,11 @@ CREATE TABLE department (
     head_lecturer_code VARCHAR(6)
 );
 
+
 -- Lecturer table
 CREATE TABLE lecturer (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    lecturer_id CHAR(6) NOT NULL UNIQUE,
+    lecturer_id VARCHAR(8) NOT NULL UNIQUE,
     department_name VARCHAR(60),
     full_name VARCHAR(50) NOT NULL,
     gender ENUM('Nam', 'Nữ') NOT NULL,
@@ -46,11 +46,10 @@ CREATE TABLE lecturer (
         REFERENCES login(username)
 );
 
--- Student table
 CREATE TABLE student (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
     intake CHAR(2),
-    student_id CHAR(6) NOT NULL UNIQUE,
+    student_id VARCHAR(8) NOT NULL UNIQUE,
     department_name VARCHAR(60),
     full_name VARCHAR(50) NOT NULL,
     gender ENUM('Nam', 'Nữ') NOT NULL,
@@ -66,10 +65,9 @@ CREATE TABLE student (
 		REFERENCES login(username)
 );
 
--- Course table
 CREATE TABLE course (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    course_code CHAR(5) NOT NULL UNIQUE,
+    course_code VARCHAR(7) NOT NULL UNIQUE,
     course_name VARCHAR(100) NOT NULL UNIQUE,
     credits TINYINT UNSIGNED CHECK (credits BETWEEN 1 AND 10) NOT NULL,
     department_name VARCHAR(60),
@@ -77,16 +75,14 @@ CREATE TABLE course (
         REFERENCES department(department_name) ON UPDATE CASCADE ON DELETE SET NULL
 );
 
-
--- Class table
 CREATE TABLE class (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    class_code CHAR(5) NOT NULL UNIQUE,
+    class_code VARCHAR(7) NOT NULL UNIQUE,
     class_name VARCHAR(100) NOT NULL,
     course_name VARCHAR(100),
     department_name VARCHAR(60),
     student_count INT UNSIGNED DEFAULT 0 CHECK (student_count <= 500),
-    lecturer_id CHAR(6) NOT NULL,
+    lecturer_id VARCHAR(8) NOT NULL,
     academic_year CHAR(9) NOT NULL CHECK (academic_year REGEXP '^[0-9]{4}-[0-9]{4}$'),
     semester TINYINT CHECK (semester BETWEEN 1 AND 4) NOT NULL,
     CONSTRAINT fk_class_course FOREIGN KEY (course_name) 
@@ -100,7 +96,7 @@ CREATE TABLE class (
 -- News table
 CREATE TABLE news (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    news_code CHAR(8) NOT NULL UNIQUE,
+    news_code VARCHAR(8) NOT NULL UNIQUE,
     title VARCHAR(200) NOT NULL,
     content TEXT NOT NULL,
     document_url VARCHAR(255),
@@ -112,11 +108,10 @@ CREATE TABLE news (
     REFERENCES login(username)
 );
 
--- Schedule table
 CREATE TABLE schedule (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    class_code CHAR(5) NOT NULL,
-    lecturer_id CHAR(6) NOT NULL,
+    class_code VARCHAR(7) NOT NULL,
+    lecturer_id VARCHAR(8) NOT NULL,
     classroom VARCHAR(20) NOT NULL,
     start_period TINYINT UNSIGNED NOT NULL CHECK (start_period BETWEEN 1 AND 12),
     end_period TINYINT UNSIGNED NOT NULL CHECK (end_period BETWEEN 2 AND 12),
@@ -147,7 +142,7 @@ CREATE TABLE activity_log (
 -- Payment table
 CREATE TABLE payment (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    student_id CHAR(6) NOT NULL,
+    student_id VARCHAR(8) NOT NULL,
     payment_date DATE NOT NULL,
     amount DECIMAL(15,2) NOT NULL CHECK (amount >= 0),
     description VARCHAR(200) NOT NULL,
@@ -159,4 +154,3 @@ CREATE TABLE payment (
     CONSTRAINT fk_payment_login FOREIGN KEY (approved_by)
         REFERENCES login(username) ON UPDATE CASCADE ON DELETE SET NULL
 );
-
